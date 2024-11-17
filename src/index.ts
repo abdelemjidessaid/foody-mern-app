@@ -4,7 +4,8 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 import userRouter from "./routes/UserRoute";
-import restaurantRouter from "./routes/RestaurantRoute";
+import restaurantRouter from "./routes/MyRestaurantRoute";
+import _restaurantRouter from "./routes/RestaurantRoute";
 
 // connect the mongo db
 mongoose
@@ -34,6 +35,7 @@ app.use("/api/my/user", userRouter);
 
 // restaurant end point
 app.use("/api/my/restaurant", restaurantRouter);
+app.use("/api/restaurant", _restaurantRouter);
 
 app.listen(7000, () => {
   console.log("Server started running on http://localhost:7000");

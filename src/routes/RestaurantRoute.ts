@@ -1,46 +1,14 @@
 import express from "express";
-import multer from "multer";
+import { param } from "express-validator";
 import RestaurantController from "../controllers/RestaurantController";
-import { jwtCheck, jwtParse } from "../middleware/auth";
-import { validateRestaurantRequest } from "../middleware/validation";
 
 const router = express.Router();
 
-// initialize the multer
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});
-
-// POST /api/my/restaurant
-router.post(
-  "/",
-  upload.single("imageFile"),
-  validateRestaurantRequest,
-  jwtCheck,
-  jwtParse as express.Handler,
-  RestaurantController.createRestaurant as express.RequestHandler
-);
-
-// GET /api/my/restaurant
+// GET /api/restaurant/search/city
 router.get(
-  "/",
-  jwtCheck,
-  jwtParse as express.Handler,
-  RestaurantController.getRestaurant as express.RequestHandler
-);
-
-// PUT /api/my/restaurant
-router.put(
-  "/",
-  upload.single("imageFile"),
-  validateRestaurantRequest,
-  jwtCheck,
-  jwtParse as express.Handler,
-  RestaurantController.updateRestaurant as express.RequestHandler
+  "/search/:city",
+  param("city").isString().trim().notEmpty().withMessage("City parameter must be a valid string"),
+  RestaurantController.searchRestaurant as express.RequestHandler
 );
 
 export default router;
