@@ -1,3 +1,4 @@
 .env
+connect-git
 dist/
 node_modules/
